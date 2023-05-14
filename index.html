@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Baixar Videos</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <style>
+        body{
+            background-color: black;
+        }
+    form {
+        margin-top: 20px;
+    
+        
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f2f2f2;
+        border-radius: 5px;
+        border: solid 1px black;
+      }
+      
+      label {
+        margin-bottom: 5px;
+      }
+      .tipo{
+        width: 99%;
+      }
+      .url{
+        width: 95%;
+      }
+      input,
+      select {
+        border: 1px solid black;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        font-size: 16px;
+        font-family: Arial, sans-serif;
+      }
+      #loader {
+        display: none;
+        width: 50px;
+        height: 50px;
+        background-image: url('https://upload.wikimedia.org/wikipedia/commons/b/b9/Youtube_loading_symbol_1_(wobbly).gif');
+        background-size: cover;
+      }
+      select {
+        appearance: none;
+        -webkit-appearance: none;
+        background-color: #fff;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 4'%3E%3Cpath fill='%23333' d='M0 0l4 4 4-4z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 8px;
+        padding-right: 30px;
+      }
+      
+      button {
+        background-color: #4CAF50;
+        color: #fff;
+        padding: 10px 20px;
+        border: solid 1px black;
+        border-radius: 5px;
+        font-size: 16px;
+        font-family: Arial, sans-serif;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      button:hover {
+        background-color: #3e8e41;
+      }
+      </style>
+</head>
+<body>
+    <br><br><br>
+    <form method="post" action="/download">
+
+      <label for="url" >URL do vídeo:</label><br>
+      <input type="text" class="url" id="url" name="url" required>
+
+      <label for="tipo">Tipo de arquivo:</label><br>
+      <select class="tipo" id="tipo" name="tipo">
+        <option value="mp4">MP4</option>
+      </select>
+        <button type="button" id="button">Download</button>
+      </form>
+      <center>
+        <div id="loader"></div>
+      </center>
+      
+</body>
+<script>
+    let btn = document.getElementById('button');
+    
+    btn.addEventListener('click', async function(){
+        document.getElementById("loader").style.display = "block";
+        let url = document.getElementById('url').value;
+        let tipo = document.getElementById('tipo').value;
+        let body = {
+            url:url,
+            type:tipo
+        }
+        let config = {
+            method:'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body:JSON.stringify(body)
+        };
+        console.log("config",config);
+        var result = await fetch('/download', config);
+        document.getElementById("loader").style.display = "none";
+        
+    });
+</script>
+</html>
